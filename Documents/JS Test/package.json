@@ -1,0 +1,9 @@
+{
+  "name": "github-pages-commit",
+  "bin": {
+    "check": "command.js"
+  },
+  "dependencies": {
+    "shelljs": "^0.8.5"
+  }
+}
