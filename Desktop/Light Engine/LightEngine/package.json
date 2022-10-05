@@ -1,5 +1,5 @@
 {
-  "name": "light-engine-js",
+  "name": "Light-Studio-TW@LightEngine",
   "version": "1.0.0",
   "description": "一個在JavaScript上的輕量級2D遊戲引擎。",
   "main": "LE.js",
