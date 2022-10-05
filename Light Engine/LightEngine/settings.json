@@ -1,0 +1,5 @@
+{
+  "ShowHitbox": false,
+  "AudioDevice": "auto",
+  "SaveTextureBuffer": 250
+}
