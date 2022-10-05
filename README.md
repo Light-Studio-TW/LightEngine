@@ -37,9 +37,7 @@ LE是在Light Engine裡最上層的函數，你可以用它來創建遊戲或使
 ## LE.create
 
 ## LE.create.game
-創建遊戲
-
-`LE.create.game(data)`
+`LE.create.game(data)` 創建遊戲
 
 * `data <object>` 遊戲的資料 ([查看所有的參數和必要參數](#valuegame))
 
