@@ -14,7 +14,7 @@ npm install light-engine-js
 ## **範例**
 ```js
 const LE = require('light-engine-js')                        //導入Light Engine
-LE.create.game({ type: 'sdl' })     //創建一個遊戲
+LE.create.game({ type: 'sdl' })                              //創建一個遊戲
 LE.draw.setColor('white')                                    //將繪製的顏色設為白色
 LE.draw.square(0, 0, game.window.width, game.window.height)  //繪製一個正方形
 LE.window.display()                                          //將畫面顯示到視窗
@@ -30,17 +30,52 @@ LE.window.display()                                          //將畫面顯示�
   * [LE.repeat()](#lerepeat)
   * [LE.wait()](#wait)
 * [game](#game)
+  * [game.setName()](#gamesetname)
+  * [game.setWidth()](#gamesetwidth)
+  * [game.changeWidth()](#gamechangewidth)
+  * [game.setHeight()](#gamesetheight)
+  * [game.changeHeight()](#gamechangeheight)
+  * [game.setPreloadRange()](#gamesetpreloadRange)
+  * [game.changePreloadRange()](#gamechangepreloadRange)
+  * [game.displayOperations()](#gamedisplayoperations)
+  * [game.event()](#gameevent)
+  * [game.callEvent()](#gamecallEvent)
   * [game.create](#gamecreate)
     * [game.create.texture()](#gamecreatetexture)
     * [game.create.audio()](#gamecreateaudio)
     * [game.create.object()](#gamecreateobject)
-* [參數](#參數)
+  * [game.delete](#gamedelete)
+    * [game.delete.texture()](#gamedeletetexture)
+    * [game.delete.audio()](#gamedeleteaudio)
+    * [game.delete.object()](#gamedeleteobject)
+* [game.window](#gamewindow)
+  * [game.window.setTitle()](#gamewindowsettitle)
+  * [game.window.setPosition()](#gamewindowsetposition)
+  * [game.window.changePosition()](#gamewindowchangeposition)
+  * [game.window.setSize()](#gamewindowsetsize)
+  * [game.window.changeSize()](#gamewindowchangesize)
+  * [game.window.setResizable()](#gamewindowsetresizable)
+  * [game.window.setFullscreen()](#gamewindowsetfullscreen)
+  * [game.window.maximize()](#gamewindowmaximize)
+  * [game.window.minimize()](#gamewindowminimize)
+  * [game.window.show()](#gamewindowshow)
+  * [game.window.setBorderless()](#gamewindowsetborderless)
+  * [game.window.display()](#gamewindowdisplay)
+  * [game.window.event()](#gamewindowevent)
+* [value](#value)
+  * [value.repeat](#valuerepeat)
+  * [value.create](#valuecreate)
+  * [value.create.texture](#valuecreatetexture)
+  * [value.create.audio](#valuecreateaudio)
+  * [value.create.object](#valuecreateobject)
+  * [value.create.effect](#valuecreateeffect)
+  * [value.create.window](#valuecreatewindow)
 
 # LE
 
 LE是在Light Engine裡最上層的函數，你可以用它來創建遊戲或使用一另一些Light Engine的功能。
 
-## LE.create
+##  LE.create
 
 你可以使用 LE.create 來創建遊戲。
 
@@ -52,7 +87,7 @@ LE.create.game(data) //創建遊戲
 
 ✅ 返回 [遊戲的Class](game)。
 
-## LE.delete
+##  LE.delete
 
 你可以使用 LE.delete 來刪除遊戲。
 
@@ -83,32 +118,297 @@ await LE.wait(time) //等待
 
 # game
 
-game是一個class，他會在使用[LE.create.game()](#lecreategame)後返回。
+game是一個class，他會在使用[LE.create.game()](#lecreategame)後返回，你可以透過Class裡面的參數來取得遊戲的參數，但不能直接更改，你只能透過Class裡的函數來設定.更改參數。
 
 ```js
 const { LE } = require('light-engine-js')
 let game = LE.create.game({ type: 'sdl' })
 ```
 
-## game.create
+```js
+//不同類型會有不同的參數
 
-你可以使用 LE.create 來創建材質, 音頻, 物件。
+//sdl
+{
+  id, //遊戲的ID
+  name, //遊戲的名稱
+  type, //遊戲的類型
+  preload_range //預加載範圍 (number)
+}
 
-## game.create.texture()
+//canvas
+{
+  id, //遊戲的ID
+  name, //遊戲的名稱
+  type, //遊戲的類型
+  width, //遊戲的寬度 (number)
+  height, //遊戲的高度 (number)
+  preload_range //預加載範圍 (number)
+}
+```
+
+## 遊戲Class 所有可用功能
+|功能名稱 |註解     |sdl   |canvas|
+|:----   |:----:  |:----:|:----:|
+|window  |視窗    |✅     |❌    |
+|mouse   |滑鼠    |✅     |❌    |
+|keyboard|鍵盤    |✅     |❌    |
+|create  |創建    |✅     |✅    |
+|delete  |刪除    |✅     |✅    |
+|get     |取得    |✅     |✅    |
+|draw    |繪製    |✅     |✅    |
+  
+## 遊戲Class 所有可用函數
+|函數名稱           |註解              |sdl   |canvas|參數                        |返回              |
+|:----             |:----            |:----:|:----:|:----                      |:----            |
+|setName           |設定遊戲的名稱     |❌    |✅     |`(name)`                   |game.name        |
+|setWidth          |設定遊戲的寬度     |❌    |✅     |`(value <number>)`         |game.width       |
+|changeWidth       |改變遊戲的寬度     |❌    |✅     |`(value <number>)`         |game.width       | 
+|setHeight         |設定遊戲的高度     |❌    |✅     |`(value <number>)`         |game.height      |
+|changeHeight      |改變遊戲的高度     |❌    |✅     |`(value <number>)`         |game.height      |
+|setPreloadRange   |設定遊戲的預加載範圍|✅    |✅     |`(value <number>)`         |game.preloadRange|
+|changePreloadRange|改變遊戲的預加載範圍|✅    |✅     |`(value <number>)`         |game.preloadRange|
+|displayOperations |顯示優化          |✅    |✅     |                           |undefined        |
+|event             |聆聽事件          |✅    |✅     |`(name, func  <function> )`|class            |
+|callEvent         |呼叫事件          |✅    |✅     |`(name, value)`            |呼叫的事件數量      |  
+
+## game.setName()
+```js
+game.setName(name) //更改遊戲名稱
+```
+* `name`｜遊戲的新名稱 (必要參數)
+
+✅ 返回 game.name
+
+## game.setWidth()
+```js
+game.setWidth(value) //設定遊戲的寬度
+```
+* `value <number>`｜遊戲的新寬度 (必要參數)
+
+✅ 返回 game.width
+
+## game.changeWidth()
+```js
+game.changeWidth(value) //更改遊戲的寬度
+```
+* `value <number>`｜改變的值 (必要參數)
+
+✅ 返回 game.height
+
+## game.setHeight()
+```js
+game.setHeight(value) //設定遊戲的高度
+```
+* `value <number>`｜遊戲的新高度 (必要參數)
+
+✅ 返回 game.height
+
+## game.changeHeight()
+```js
+game.changeHeight(value) //更改遊戲的高度
+```
+* `value <number>`｜改變的值 (必要參數)
+
+✅ 返回 game.height
+
+## game.setPreloadRange()
+```js
+game.setPreloadRange(value) //設定遊戲的預加載範圍
+```
+* `value <number>`｜遊戲的新預加載範圍 (必要參數)
+
+✅ 返回 game.preloadRange
+
+## game.changePreloadRange()
+```js
+game.changePreloadRange(value) //更改遊戲的預加載範圍
+```
+* `value <number>`｜改變的值 (必要參數)
+
+## game.displayOperations()
+```js
+game.displayOperations(value) //顯示優化
+```
+顯示優化是在Lighe Engine裡優化遊戲的一總，在您進行顯示優化時，他會將在螢幕內的物件加入顯示清單，這樣遊戲就只需要渲染螢幕內的物件。你可以透過調整[預加載範圍](#gamesetpreloadRange)來在顯示優化的時候加載螢幕外的物件。
+
+❌ 不返回任何東西
+
+## game.event()
+```js
+game.event(name, func) //聆聽事件
+
+//範例
+let event = game.event('test', (value) => {
+  console.log(value)
+  event.stop()
+})  
+```
+
+* `name`｜事件的名稱 (必要參數)
+* `func <function>`｜在收到事件時觸發的函示 (必要參數)
+
+✅ 返回一個Class，你可以用Class裡的stop函數來停止聆聽事件
+
+## game.callEvent()
+```js
+game.callEvent(name, value)
+
+//範例
+game.callEvent('test', 'hello')
+```
+
+* `name`｜要呼叫的事件名稱 (必要參數)
+* `value`｜要附加的參數 (可查看[game.event()](#gameevent))
+
+##  game.create
+
+你可以使用 game.create 來創建材質, 音頻, 物件。
+
+### game.create.texture()
 ```js
 await game.create.texture(data) //創建材質
 ```
-* `data <object>`｜創建材質的的資料 ([查看所有的參數和必要參數](#valuetexture))
+* `data <object>`｜創建材質的的資料 ([查看所有的參數和必要參數](#valuetexture)) (必要參數)
 
 ✅ 返回一個Object { id, width, height }
 
-## game.create.audio()
+### game.create.audio()
 ```js
 await game.create.audio(data) //創建音頻
 ```
-* `data <object>`｜創建音頻的的資料 ([查看所有的參數和必要參數](#valueaudio))
+* `data <object>`｜創建音頻的的資料 ([查看所有的參數和必要參數](#valueaudio)) (必要參數)
 
 ✅ 返回 [音頻的Class](audio)
+
+### game.create.object()
+```js
+game.create.object(data) //創建物件
+```
+* `data <object>`｜創建物件的資料 ([查看所有的參數和必要參數](#valueobject)) (必要參數)
+
+✅ 返回 [物件的Class](object)
+
+## game.delete
+
+你可以用 game.delete 來刪除材質.音頻.物件。
+
+### game.delete.texture()
+```js
+game.delete.texture(texture) //刪除材質
+```
+
+* `texture`｜材質的ID或材質的Class (不傳入的話將會刪除全部材質)
+
+❌ 不返回任何東西
+
+### game.delete.audio()
+```js
+game.delete.audio(audio) //刪除音頻
+```
+
+* `audio`｜音頻的ID或音頻的Class (不傳入的話將會刪除全部音頻)
+
+❌ 不返回任何東西
+
+### game.delete.object()
+```js
+game.delete.object(object) //刪除物件
+```
+
+* `tobject`｜物件的ID或物件的Class (不傳入的話將會刪除全部物件)
+
+❌ 不返回任何東西
+
+# game.window
+window是一個Class，如果您的遊戲類型為sdl，那你將可以透過game.window來找到此Class，你可以透過Class裡面的參數來取得遊戲的參數，但不能直接更改，你只能透過Class裡的函數來設定.更改參數。
+
+[查看哪種遊戲類型擁有window功能](#game)
+
+[查看視窗創建時的參數](#valuecreatewindow)
+
+```js
+{
+  title, //視窗的標題
+  x, //視窗的x
+  y, //視窗的Y
+  width, //視窗的寬度
+  height, //視窗的高度
+  resizable, //視窗是否可重設大小 (boolean)
+  fullscreen, //視窗是否為全螢幕 (boolean)
+  maximized, //視窗是否最大化 (boolean)
+  minimized, //視窗是否最小化 (boolean)
+  visible, //視窗是否可見 (boolean)
+  borderless //視窗是否消除邊界 (boolean)
+}
+```
+
+## game.window.setTitle()
+```js
+game.window.setTitle(title) //設定視窗的標題
+```
+
+* `title <string>`｜視窗的新名稱 (必要參數)
+
+✅ 返回 game.window.title
+
+## game.window.setPosition()
+```js
+game.window.setPosition(x, y) //設定視窗的位置
+```
+
+* `x <number>`｜視窗的新X座標 (必要參數)
+* `y <number>`｜視窗的新Y座標 (必要參數)
+
+✅ 返回 { x: game.window.x, y: game.window.y }
+
+## game.window.changePosition()
+```js
+game.window.changePosition(x, y) //改變視窗的位置
+```
+
+* `x <number>`｜改變視窗的X座標的值 (必要參數)
+* `y <number>`｜改變視窗的Y座標的值 (必要參數)
+
+✅ 返回 { x: game.window.x, y: game.window.y }
+
+## game.window.setSize()
+```js
+game.window.setSize(width, height) //設定視窗的大小
+```
+
+* `width <number>`｜視窗的新寬度 (必要參數)
+* `height <number>`｜視窗的新高度 (必要參數)
+
+✅ 返回 { width: game.window.width, height: game.window.height }
+
+## game.window.changeSize()
+```js
+game.window.changeSize(width, height) //改變視窗的大小
+```
+
+* `width <number>`｜改變視窗寬度的值 (必要參數)
+* `height <number>`｜改變視窗高度的值 (必要參數)
+
+✅ 返回 { width: game.window.width, height: game.window.height }
+
+## game.window.setResizable()
+```js
+game.window.setResizable(boolean) //設定視窗是否可重設大小
+```
+
+* `bollean <bollean>`｜視窗是否可重設大小
+
+✅ 返回 game.window.resizable
+
+## game.window.setFullscreen()
+```js
+game.window.setFullscreen(boolean) //設定視窗是否為全螢幕
+```
+
+* `bollean <bollean>`｜視窗是否為全螢幕
+
+✅ 返回 game.window.fullscreen
 
 # 參數
 
@@ -121,7 +421,12 @@ await game.create.audio(data) //創建音頻
 }
 ```
 
-## value.game
+## value.create
+
+value.create指的是在創建所有.必要的參數
+
+### value.create.game
+創建遊戲的參數
 ```js
 //默認參數
 {
@@ -132,11 +437,12 @@ await game.create.audio(data) //創建音頻
   height: 500, //遊戲的高度｜必須為數字
   camera_x: 0, //鏡頭的X｜必須為數字
   camera_y: 0, //鏡頭的Y｜必須為數字
-  preload_range: 50 //預加載範圍｜必須為數字
+  preloadRange: 50 //預加載範圍｜必須為數字
 }
 ```
 
-## value.textures
+### value.create.textures
+ 創建材質的參數
 ```js
 //默認參數
 { 
@@ -145,7 +451,9 @@ await game.create.audio(data) //創建音頻
 }
 ```
 
-## value.audio
+### value.create.audio
+創建音頻的參數
+[所有格式 (format)](https://github.com/kmamal/node-sdl#sample-formats)
 ```js
 //默認參數
 {
@@ -158,5 +466,60 @@ await game.create.audio(data) //創建音頻
   end: undefined, //結束的時間｜必須為數字(s)
   volume: 1, //音量｜必須為數字
   speed: 1 //速度｜必須為數字
+}
+```
+
+### value.create.object
+創建物件的參數
+[效果的參數](#valueeffect)
+```js
+{
+  id: RandomID, //音頻的ID｜(不傳入的話將會自動生成)
+  x: 0, //物件的X｜必須為數字
+  y: 0, //物件的Y｜必須為數字
+  texture: undefined, //材質的ID或材質的Class｜必要參數
+  layer: 1, //物件的層數 (高層的物件會蓋掉低層的物件)｜必須為數字
+  width: 0, //物件的寬度 (會去在材質的寬度上做更改，設為0的話就會是原本材質的寬度)｜必須為數字
+  height: 0, //物件的高度 (會去在材質的高度上做更改，設為0的話就會是原本材質的高度)｜必須為數字
+  angle: 0, //物件角度｜必須為數字
+  effect: value.effect, //效果的參數
+  hitbox: {
+    width: 0, //碰撞箱的寬度
+    height: 0 //碰撞箱的高度
+  }
+}
+```
+
+### value.create.effect
+創建效果的參數
+```js
+{
+  brightness: 0, //亮度｜必須為數字 (-100~100)
+  grayscale: 0, //灰度｜必須為數字 (0~100)
+  transparent: 0, //透明度｜必須為數字 (0~100)
+  invert: 0, //顏色反轉｜必須為數字 (0~100)
+  removeBackground: 0, //去背等級｜必須為數字 (> -1)
+  blur: 0, //模糊｜必須為數字 (> -1)
+  red: 0, //紅｜必須為數字 (-255~255)
+  green: 0, //綠｜必須為數字 (-255~255)
+  blue: 0 //藍｜必須為數字 (-255~255)
+}
+```
+
+### value.create.window
+視窗創建時的參數 (會在遊戲創建時自動創建)
+```js
+{
+  title: game.name, //視窗的標題
+  x: 0, //視窗的X
+  y: 0, //視窗的Y
+  width: game.width //視窗的寬度
+  height: game.height //視窗的高度
+  resizable: false, //視窗是否可重設大小
+  fullscreen: false, //視窗是否為全螢幕
+  maximized: false, //視窗是否最大化
+  minimized: false, //視窗是否最小化
+  visible: true, //視窗是否可見
+  borderless: false //視窗是否消除邊界
 }
 ```
