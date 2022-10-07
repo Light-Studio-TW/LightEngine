@@ -93,12 +93,10 @@ let LE = new class {
     } else if (func2 !== undefined && typeof func2 !== 'function') {
       error('VMBF', 'func2')
     }
-    if (data.time === undefined) {
-      data.time = Infinity
-    }
-    if (data.interval === undefined) {
-      data.interval = 0.1
-    }
+    data = defaultValue({
+      time: Infinity,
+      interval: 0.1
+    }, data)
     return new class {
       constructor () {
         this.startTime = 0
@@ -150,15 +148,18 @@ let LE = new class {
       error('VMBN', 'time')
     } else {
       return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          resolve()
-        }, time)
+        let startTime = Date.now()
+        setInterval(() => {
+          if (Date.now() > startTime+time) {
+            resolve()
+          }
+        }, 5)
       })
     }
   }
 }
 
-module.exports = { LE }
+module.exports = LE
 
 const { games } = require('./data')
 const { error } = require('./Function/Error')

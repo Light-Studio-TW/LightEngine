@@ -3,6 +3,7 @@ const path = require('path')
 
 //加載音頻
 async function loadAudio (path, { channels, frequency }, { start, end }, { volume, speed }, callback) {
+  loadPackages()
 	const proc = spawn(
 		ffmpeg,
 		[
@@ -159,16 +160,22 @@ const { games, addClassData, updateClassData } = require('../data')
 const { error } = require('./Error')
 const { getSettings } = require('./Settings')
 
-//導入node-sdl
-try {
-  var sdl = require('@kmamal/sdl')
-} catch (err) {
-  error('MP', ['@kmamal/sdl', 'npm install @kmamal/sdl'])
-}
-
-//導入ffmpeg
-try {
-  var ffmpeg = require('ffmpeg-static')
-} catch (err) {
-  error('MP', ['ffmpeg-static', 'npm install ffmpeg-static'])
+var sdl, ffmpeg
+function loadPackages () {
+  if (sdl === undefined) {
+    //導入node-sdl
+    try {
+      sdl = require('@kmamal/sdl')
+    } catch (err) {
+      error('MP', ['@kmamal/sdl', 'npm install @kmamal/sdl'])
+    }
+  }
+  if (ffmpeg === undefined) {
+    //導入ffmpeg
+    try {
+      ffmpeg = require('ffmpeg-static')
+    } catch (err) {
+      error('MP', ['ffmpeg-static', 'npm install ffmpeg-static'])
+    }
+  }
 }

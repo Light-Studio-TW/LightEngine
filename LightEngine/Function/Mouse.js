@@ -1,5 +1,6 @@
 class MOUSE {
   constructor (game) {
+    loadPackages()
     this.game = game
     this.nowPress = {}
     this.updater = {
@@ -107,9 +108,14 @@ module.exports = { MOUSE, getPosition }
 const { games } = require('../data')
 const { error } = require('./Error')
 
-//導入node-sdl
-try {
-  var sdl = require('@kmamal/sdl')
-} catch (err) {
-  error('MP', ['@kmamal/sdl', 'npm install @kmamal/sdl'])
+var sdl
+function loadPackages () {
+  if (sdl === undefined)  {
+    //導入node-sdl
+    try {
+      sdl = require('@kmamal/sdl')
+    } catch (err) {
+      error('MP', ['@kmamal/sdl', 'npm install @kmamal/sdl'])
+    }
+  }
 }

@@ -1,5 +1,6 @@
 //創建視窗
 function createWindow (data) {
+  loadPackages()
   return sdl.video.createWindow(data)
 }
 
@@ -221,9 +222,14 @@ const { error } = require('./Error')
 const { displayOperations } = require('./Game')
 const { getCanvas } = require('./Canvas')
 
-//導入node-sdl
-try {
-  var sdl = require('@kmamal/sdl')
-} catch (err) {
-  error('MP', ['@kmamal/sdl', 'npm install @kmamal/sdl'])
+var sdl
+function loadPackages () {
+  if (sdl === undefined)  {
+    //導入node-sdl
+    try {
+      sdl = require('@kmamal/sdl')
+    } catch (err) {
+      error('MP', ['@kmamal/sdl', 'npm install @kmamal/sdl'])
+    }
+  }
 }

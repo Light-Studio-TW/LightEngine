@@ -1,5 +1,19 @@
 const fs = require('fs')
 
+function createEffectData () {
+  return {
+    brightness: 0,
+    grayscale: 0,
+    transparent: 0,
+    invert: 0,
+    removeBackground: 0,
+    blur: 0,
+    red: 0,
+    green: 0,
+    blue: 0
+  }
+}
+
 class EFFECT {
   constructor (game, object) {
     this.game = game
@@ -575,7 +589,7 @@ function applyEffect (texture, effect) {
   return canvas
 }
 
-module.exports = { EFFECT, applyEffect }
+module.exports = { EFFECT, createEffectData, applyEffect }
 
 const { games, addClassData, updateClassData } = require('../data')
 const { error } = require('./Error')

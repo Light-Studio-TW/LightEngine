@@ -10,7 +10,7 @@ function createGameData (data) {
       camera_x: data.camera_x, 
       camera_y: data.camera_y, 
       window: createWindow({ title: data.name, width: data.width, height: data.height}),
-      preload_range: data.preload_range,
+      preloadRange: data.preloadRange,
       display: undefined,
       canvas: {},
       change: true,
@@ -45,7 +45,7 @@ function createGameData (data) {
       camera_y: data.camera_y, 
       width: data.width,
       height: data.height,
-      preload_range: data.preload_range,
+      preloadRange: data.preloadRange,
       display: undefined,
       canvas: {},
       change: true,
@@ -136,6 +136,7 @@ class CREATE {
         error('DID', data.id)
       }
       data = defaultValue({
+        id: undefined,
         path: undefined,
         channels: 1,
         frequency: 44100,
@@ -145,6 +146,9 @@ class CREATE {
         volume: 1,
         speed: 1
       }, data)
+      if (typeof data.channels !== 'number' || typeof data.frequency !== 'number' || typeof data.start !== 'number' || typeof data.end !== 'number' || typeof data.volume !== 'number' || typeof data.speed !== 'number') {
+        error('OVMBN', ['data', 'channels, frequency, start, end, volume, speed'])
+      }
       games[this.id].audios[data.id] = {
         path: data.path,
         channels: data.channels,
@@ -199,17 +203,7 @@ class CREATE {
         width: 0,
         height: 0,
         angle: 0, 
-        effect: {
-          brightness: 0,
-          grayscale: 0,
-          transparent: 0,
-          invert: 0,
-          removeBackground: 0,
-          blur: 0,
-          red: 0,
-          green: 0,
-          blue: 0
-        },
+        effect: createEffectData(),
         hitbox: {
           width: 0, 
           height: 0 
@@ -374,12 +368,12 @@ class GAME_SDL {
     this.delete = new DELETE(data.id)
     this.get = new GET(data.id)
     this.draw = new DRAW(data.id)
-    this.synchronized_value = function () {
+    addClassData(data.id, 'game', data.id, () => {
       this.name = games[this.id].name
       this.type = games[this.id].type
-      this.preload_range = games[this.id].preload_range
-    }
-    this.synchronized_value()
+      this.preloadRange = games[this.id].preloadRange
+    })
+    updateClassData(data.id, 'game', data.id)
   }
   //設定預加載範圍
   setPreloadRange (value) {
@@ -390,8 +384,8 @@ class GAME_SDL {
     } else if (typeof value !== 'number') {
       error('VMBN', 'value')
     } else {
-      games[this.id].preload_range = value
-      this.synchronized_value()
+      games[this.id].preloadRange = value
+      updateClassData(this.id, 'game', this.id)
       return value
     }
   }
@@ -404,9 +398,9 @@ class GAME_SDL {
     } else if (typeof value !== 'number') {
       error('VMBN', 'value')
     } else {
-      games[this.id].preload_range += value
-      this.synchronized_value()
-      return games[this.id].preload_range
+      games[this.id].preloadRange += value
+      updateClassData(this.id, 'game', this.id)
+      return games[this.id].preloadRange
     }
   }
   //顯示運算
@@ -467,14 +461,14 @@ class GAME_CANVAS {
     this.delete = new DELETE(data.id)
     this.get = new GET(data.id)
     this.draw = new DRAW(data.id)
-    this.synchronized_value = function () {
+    addClassData(data.id, 'game', data.id, () => {
       this.name = games[this.id].name
       this.type = games[this.id].type
       this.width = games[this.id].width
       this.height = games[this.id].height
-      this.preload_range = games[this.id].preload_range
-    }
-    this.synchronized_value()
+      this.preloadRange = games[this.id].preloadRange
+    })
+    updateClassData(data.id, 'game', data.id)
   }
   //設定遊戲的名稱
   setName (name) {
@@ -484,7 +478,7 @@ class GAME_CANVAS {
       error('MV', 'name')
     } else {
       games[this.id].name = name
-      this.synchronized_value()
+      updateClassData(this.id, 'game', this.id)
       return name
     }
   }
@@ -498,7 +492,7 @@ class GAME_CANVAS {
       error('VMBN', 'value')
     } else {
       games[this.id].width = value
-      this.synchronized_value()
+      updateClassData(this.id, 'game', this.id)
       return value
     }
   }
@@ -512,7 +506,7 @@ class GAME_CANVAS {
       error('VMBN', 'value')
     } else {
       games[this.id].width =+ value
-      this.synchronized_value()
+      updateClassData(this.id, 'game', this.id)
       return games[this.id].width
     }
   }
@@ -526,7 +520,7 @@ class GAME_CANVAS {
       error('VMBN', 'value')
     } else {
       games[this.id].height = value
-      this.synchronized_value()
+      updateClassData(this.id, 'game', this.id)
       return value
     }
   }
@@ -540,7 +534,7 @@ class GAME_CANVAS {
       error('VMBN', 'value')
     } else {
       games[this.id].height =+ value
-      this.synchronized_value()
+      updateClassData(this.id, 'game', this.id)
       return games[this.id].height
     }
   }
@@ -553,8 +547,8 @@ class GAME_CANVAS {
     } else if (typeof value !== 'number') {
       error('VMBN', 'value')
     } else {
-      games[this.id].preload_range = value
-      this.synchronized_value()
+      games[this.id].preloadRange = value
+      updateClassData(this.id, 'game', this.id)
       return value
     }
   }
@@ -567,9 +561,9 @@ class GAME_CANVAS {
     } else if (typeof value !== 'number') {
       error('VMBN', 'value')
     } else {
-      games[this.id].preload_range += value
-      this.synchronized_value()
-      return games[this.id].preload_range
+      games[this.id].preloadRange += value
+      updateClassData(this.id, 'game', this.id)
+      return games[this.id].preloadRange
     }
   }
   //顯示運算
@@ -618,7 +612,7 @@ class GAME_CANVAS {
     } else if (['textureCreate', 'audioCreate', 'objectCreate', 'textureDelete', 'audioDelete', 'objectDelete'].includes(name)) {
       throw new Error(`[Light Engine]: 無法呼叫事件 ${name} (此事件只能由系統發出)`)
     } else {
-      callEvent(this.id, name, value)
+      return callEvent(this.id, name, value)
     }
   }
 }
@@ -632,8 +626,8 @@ function displayOperations (id, width, height) {
   for (let run = 0; run < all_object.length; run++) {
     object = games[id].objects[all_object[run]]
     texture = games[id].textures[object.texture]
-    if ((object.x-games[id].camera_x)+(texture.width+object.width) > 0-games[id].preload_range && object.x-games[id].camera_x < width+games[id].preload_range) {
-      if (object.y+games[id].camera_y > 0-games[id].preload_range && (object.y-games[id].camera_y)-(texture.height+object.height) < height+games[id].preload_range) {
+    if ((object.x-games[id].camera_x)+(texture.width+object.width) > 0-games[id].preloadRange && object.x-games[id].camera_x < width+games[id].preloadRange) {
+      if (object.y+games[id].camera_y > 0-games[id].preloadRange && (object.y-games[id].camera_y)-(texture.height+object.height) < height+games[id].preloadRange) {
         display_save.push({type: 'object', id: object.id, layer: object.layer})
       }
     }
@@ -648,15 +642,17 @@ async function callEvent (game, name, value) {
     for (let run = 0; run < all_key.length; run++) {
       games[game].event[name][all_key[run]](value)
     }
+    return all_key
   }
 }
 
 module.exports = { GAME_SDL, GAME_CANVAS, createGameData, displayOperations }
 
-const { games } = require('../data')
+const { games, addClassData, updateClassData } = require('../data')
 const { error } = require('./Error')
 const { defaultValue } = require('./DefaultValue')
 const { generateID } = require('./GenerateID')
+const { createEffectData } = require('./Effect')
 const { WINDOW, createWindow } = require('./Window')
 const { MOUSE } = require('./Mouse')
 const { KEYBOARD } = require('./Keyboard')
