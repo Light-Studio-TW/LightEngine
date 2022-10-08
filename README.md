@@ -67,6 +67,9 @@ LE.window.display()                                          //將畫面顯示�
   * [game.mouse.getX()](#gamemousegetx)
   * [game.mouse.getY()](#gamemousegety)
   * [game.mouse.event()](#gamemouseevent)
+* [game.keyboard](#gamekeyboard)
+  * [game.keyboard.keyDown()](#gamekeyboardkeydown)
+  * [game.keyboard.keyUp()](#gamekeyboardkeyup)
 * [value](#value)
   * [value.repeat](#valuerepeat)
   * [value.create](#valuecreate)
@@ -538,6 +541,46 @@ game.mouse.event(name, callback) //聆聽滑鼠的事件
 |buttonDown|滑鼠鍵按下時觸發   |{x, y, button}  |
 |buttonUp  |滑鼠鍵放開時觸發   |{x, y, button}  |
 |wheel     |滑鼠滾輪滾動時觸發 |{x, y}          |
+
+✅ 返回一個Class，你可以用Class裡的stop函數來停止聆聽事件
+
+# game.keyboard
+
+keyboard是一個Class，如果您的遊戲類型為sdl，那你將可以透過game.keyboard來找到此Class，你可以透過Class裡面的參數來取得鍵盤的參數，但不能直接更改，你只能透過Class裡的函數來設定.更改參數。
+
+```js
+{
+  nowPress //現在按下 (object)
+}
+
+//nowPress示範
+//假設鍵盤按鍵a按下
+console.log(game.mouse.nowPress['a']) //true
+//假設鍵盤按鍵a沒有按下
+console.log(game.mouse.nowPress['a']) //undefined
+
+if (game.mouse.nowPress['a']) {
+  console.log('yes')
+} else {
+  console.log('no')
+}
+```
+
+## game.keyboard.keyDown()
+```js
+game.keyboard.keyDown(callback) //當按鍵按下
+```
+
+* `callback (function)`｜按鍵按下後觸發的函數
+
+✅ 返回一個Class，你可以用Class裡的stop函數來停止聆聽事件
+
+## game.keyboard.keyUp()
+```js
+game.keyboard.keyDown(callback) //當按鍵放開
+```
+
+* `callback (function)`｜按鍵放開後觸發的函數
 
 ✅ 返回一個Class，你可以用Class裡的stop函數來停止聆聽事件
 
