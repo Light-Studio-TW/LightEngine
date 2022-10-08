@@ -3,7 +3,7 @@
 [![Package](https://img.shields.io/npm/v/%2540kmamal%252Fsdl)](https://www.npmjs.com/package/light-engine-js)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-### 一個在JavaScript上的輕量級2D遊戲引擎。
+一個在JavaScript上的輕量級2D遊戲引擎。
 
 ## **安裝**
 你可以使用npm來安裝Light Engine。
@@ -20,7 +20,7 @@ LE.draw.square(0, 0, game.window.width, game.window.height)  //繪製一個正�
 LE.window.display()                                          //將畫面顯示到視窗
 ```
 
-# **功能**
+# **內容**
 
 * [LE](#le)
   * [LE.create](#lecreate)
@@ -58,10 +58,15 @@ LE.window.display()                                          //將畫面顯示�
   * [game.window.setFullscreen()](#gamewindowsetfullscreen)
   * [game.window.maximize()](#gamewindowmaximize)
   * [game.window.minimize()](#gamewindowminimize)
-  * [game.window.show()](#gamewindowshow)
+  * [game.window.setVisible()](#gamewindowsetvisible)
   * [game.window.setBorderless()](#gamewindowsetborderless)
   * [game.window.display()](#gamewindowdisplay)
   * [game.window.event()](#gamewindowevent)
+* [game.mouse](#gamemouse)
+  * [game.mouse.getPosition()](#gamemousegetposition)
+  * [game.mouse.getX()](#gamemousegetx)
+  * [game.mouse.getY()](#gamemousegety)
+  * [game.mouse.event()](#gamemouseevent)
 * [value](#value)
   * [value.repeat](#valuerepeat)
   * [value.create](#valuecreate)
@@ -70,6 +75,7 @@ LE.window.display()                                          //將畫面顯示�
   * [value.create.object](#valuecreateobject)
   * [value.create.effect](#valuecreateeffect)
   * [value.create.window](#valuecreatewindow)
+  * [value.create.mouse](#valuecreatemouse)
 
 # LE
 
@@ -112,7 +118,7 @@ LE.delete.game(game) //刪除遊戲
 ```js
 await LE.wait(time) //等待
 ```
-* `time <number>`｜等待的時間 (s)
+* `time <number>`｜等待的時間 (m)
 
 ❌ 不返回任何東西。
 
@@ -321,7 +327,7 @@ game.delete.object(object) //刪除物件
 ❌ 不返回任何東西
 
 # game.window
-window是一個Class，如果您的遊戲類型為sdl，那你將可以透過game.window來找到此Class，你可以透過Class裡面的參數來取得遊戲的參數，但不能直接更改，你只能透過Class裡的函數來設定.更改參數。
+window是一個Class，如果您的遊戲類型為sdl，那你將可以透過game.window來找到此Class，你可以透過Class裡面的參數來取得視窗的參數，但不能直接更改，你只能透過Class裡的函數來設定.更改參數。
 
 [查看哪種遊戲類型擁有window功能](#game)
 
@@ -397,7 +403,7 @@ game.window.changeSize(width, height) //改變視窗的大小
 game.window.setResizable(boolean) //設定視窗是否可重設大小
 ```
 
-* `bollean <bollean>`｜視窗是否可重設大小
+* `boolean <boolean>`｜視窗是否可重設大小 (必要參數)
 
 ✅ 返回 game.window.resizable
 
@@ -406,9 +412,134 @@ game.window.setResizable(boolean) //設定視窗是否可重設大小
 game.window.setFullscreen(boolean) //設定視窗是否為全螢幕
 ```
 
-* `bollean <bollean>`｜視窗是否為全螢幕
+* `boolean <boolean>`｜視窗是否為全螢幕 (必要參數)
 
 ✅ 返回 game.window.fullscreen
+
+## game.window.maximize()
+```js
+game.window.maximize() //將視窗最大化
+```
+
+❌ 不返回任何東西
+
+## game.window.minimize()
+```js
+game.window.minimize() //將視窗最小化
+```
+
+❌ 不返回任何東西
+
+## game.window.setVisible()
+```js
+game.window.setVisible(boolean) //設定視窗是否可見
+```
+
+* `boolean <boolean>`｜視窗是否可見 (必要參數)
+
+✅ 返回 game.window.visible
+
+## game.window.setBorderless()
+```js
+game.window.setBorderless(boolean) //設定視窗是否消除邊界
+```
+
+* `boolean <boolean>`｜視窗是否消除邊界 (必要參數)
+
+✅ 返回 game.window.setBorderless()
+
+## game.window.display()
+```js
+game.window.display() //將遊戲的畫面顯示到視窗
+```
+
+❌ 不返回任何東西
+
+## game.window.event()
+```js
+game.window.event(name, callback) //聆聽視窗的事件 (如視窗移動, 視窗大小改變等)
+```
+
+* `name <string>`｜事件名稱 (必要參數)
+* `callback <function>`｜收到事件時觸發的函數 (必要參數)
+
+### 所有視窗的事件
+|事件名稱   |註解             |返回             |
+|:----:    |:----:          |:----:          |
+|show      |視窗顯示時觸發     |undefined       |
+|hide      |視窗隱藏時觸發     |undefined       |
+|move      |視窗移動時觸發     |{x, y}          |
+|maximize  |視窗最大化時觸發   |undefined       |
+|minimize  |視窗最小化時觸發   |undefined       |
+|resize    |視窗大小改變時觸發  |{width, height}|
+|mouseHover|滑鼠懸停在視窗時觸發|undefined       |
+|mouseLeave|滑鼠離開視窗時觸發  |undefined      |
+
+# game.mouse
+mouse是一個Class，如果您的遊戲類型為sdl，那你將可以透過game.mouse來找到此Class，你可以透過Class裡面的參數來取得滑鼠的參數，但不能直接更改，你只能透過Class裡的函數來設定.更改參數。
+
+```js
+//滑鼠Class的參數
+{ 
+  nowPress //現在按下 (object)
+}
+
+//nowPress示範
+//假設滑鼠按鍵1(左鍵)按下
+console.log(game.mouse.nowPress[1]) //true
+//假設滑鼠按鍵1(左鍵)沒有按下
+console.log(game.mouse.nowPress[1]) //undefined
+
+if (game.mouse.nowPress[1]) {
+  console.log('yes')
+} else {
+  console.log('no')
+}
+```
+
+## game.mouse.getPosition()
+```js
+game.mouse.getPosition(type) //取得滑鼠的位置
+```
+
+* `type <string>`｜你可以用兩種方式取得滑鼠的X位置，相對於視窗或整個螢幕。兩個類型分別為all, window (如果不輸入的話將會為window)
+
+✅ 返回 { x: mouse.x, y: mouse.y }
+
+## game.mouse.getX()
+```js
+game.mouse.getX(type) //取得滑鼠的X位置
+```
+
+* `type <string>`｜你可以用兩種方式取得滑鼠的X位置，相對於視窗或整個螢幕。兩個類型分別為all, window (如果不輸入的話將會為window)
+
+✅ 返回 mouse.x
+
+## game.mouse.getY()
+```js
+game.mouse.getY(type) //取得滑鼠的X位置
+```
+
+* `type <string>`｜你可以用兩種方式取得滑鼠的Y位置，相對於視窗或整個螢幕。兩個類型分別為all, window (如果不輸入的話將會為window)
+
+✅ 返回 mouse.y
+
+## game.mouse.event()
+```js
+game.mouse.event(name, callback) //聆聽滑鼠的事件
+```
+
+* `name <string>`｜事件的名稱 (必要參數)
+* `callback <function>`｜收到事件時觸發的函數 (必要參數)
+
+|事件名稱   |註解             |返回             |
+|:----     |:----           |:----           |
+|move      |滑鼠移動時觸發    |{x, y}           |
+|buttonDown|滑鼠鍵按下時觸發   |{x, y, button}  |
+|buttonUp  |滑鼠鍵放開時觸發   |{x, y, button}  |
+|wheel     |滑鼠滾輪滾動時觸發 |{x, y}          |
+
+✅ 返回一個Class，你可以用Class裡的stop函數來停止聆聽事件
 
 # 參數
 
