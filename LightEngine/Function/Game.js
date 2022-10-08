@@ -146,7 +146,8 @@ class CREATE {
         volume: 1,
         speed: 1
       }, data)
-      if (typeof data.channels !== 'number' || typeof data.frequency !== 'number' || typeof data.start !== 'number' || typeof data.end !== 'number' || typeof data.volume !== 'number' || typeof data.speed !== 'number') {
+      console.log((typeof data.end !== 'number' && data.end !== undefined), typeof data.end !== 'number', data.end !== undefined, data.end)
+      if (typeof data.channels !== 'number' || typeof data.frequency !== 'number' || typeof data.start !== 'number' || (typeof data.end !== 'number' && data.end !== undefined) || typeof data.volume !== 'number' || typeof data.speed !== 'number') {
         error('OVMBN', ['data', 'channels, frequency, start, end, volume, speed'])
       }
       games[this.id].audios[data.id] = {

@@ -428,24 +428,19 @@ class OBJECT_GROUP {
       }
       let run = 0
       return new Promise((resolve, reject) => {
-        let repeat_interval = setInterval(() => {
-          if (run > time) {
-           clearInterval(repeat_interval)
-           resolve()
+        let repeat_ = LE.repeat({ time: time, interval: 10 }, () => {
+          if (games[this.game] === undefined) {
+            repeat_.stop
           } else {
-            if (games[this.game] === undefined) {
-              clearInterval(repeat_interval)
-            } else {
-              games[this.game].change = true
-              for (let run = 0; run < this.objects.length; run++) {
-                games[this.game].objects[this.objects[run]].x += x_change[run]*10
-                games[this.game].objects[this.objects[run]].y += y_change[run]*10
-                updateClassData(this.game, 'object', this.objects[run])
-              }
+            games[this.game].change = true
+            for (let run = 0; run < this.objects.length; run++) {
+              games[this.game].objects[this.objects[run]].x += x_change[run]*10
+              games[this.game].objects[this.objects[run]].y += y_change[run]*10
+              updateClassData(this.game, 'object', this.objects[run])
             }
-            run+=10
           }
-        }, 10)
+          run+=10
+        })
       })
     }
   }
@@ -920,4 +915,5 @@ module.exports = { OBJECT_GROUP }
 const { games, updateClassData } = require('../data')
 const { error } = require('./Error')
 const { getPosition } = require('./Mouse')
+const { LE } = require('../index')
 const { ObjectGroupTouchObject, ObjectGroupTouchPoint} = require('./Hitbox')

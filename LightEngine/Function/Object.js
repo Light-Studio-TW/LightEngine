@@ -447,7 +447,7 @@ class OBJECT {
       let y_change = (y-games[this.game].objects[this.id].y)/time
       let run = 0
       return new Promise((resolve, reject) => {
-        let repeat_ = repeat({ time: time, interval: 10 }, () => {
+        let repeat_ = LE.repeat({ time: time, interval: 10 }, () => {
           if (games[this.game] === undefined || games[this.game].objects[this.id] === undefined) {
             repeat_.stop()
           } else {
@@ -520,6 +520,6 @@ module.exports = { OBJECT }
 const { games, addClassData, updateClassData } = require('../data')
 const { error } = require('./Error')
 const { getPosition } = require('./Mouse')
-const { repeat } = require('../Plugin/Tools')
+const { LE } = require('../index')
 const { ObjectTouchObject, ObjectTouchPoint, ObjectGroupTouchObject } = require('./Hitbox')
 const { EFFECT } = require('./Effect')

@@ -11,7 +11,7 @@ function tryFinedTextureBuffer (game, data) {
   }
 }
 
-//添加Class的data
+//添加Class的資料
 function addClassData (game, type, id, func) {
   if (classData[game] === undefined) {
     classData[game] = {}
@@ -24,7 +24,7 @@ function addClassData (game, type, id, func) {
   }
 }
 
-//更新Object Class的data
+//更新Class的資料
 function updateClassData (game, type, id) {
   for (let run = 0; run < classData[game][type][id].length; run++) {
     try {

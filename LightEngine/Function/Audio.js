@@ -53,9 +53,7 @@ class AUDIO  {
     } else if (func !== undefined && typeof func !== 'function') {
       error('VMBF', 'func')
     } else {
-      let date = Date.now()
       if (games[this.game].audios[this.id].player === undefined) {
-        let playbackDevice
         if (getSettings().AudioDevice === 'auto') {
           playbackDevice = sdl.audio.devices.find((x) => x.recording === false)
         } else  {

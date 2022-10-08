@@ -5,6 +5,8 @@ function error (type, content) {
     throw new Error(`[Light Engine] 缺少套件 ${content[0]} 請使用 ${content[1]} 來安裝`)
   } else if (type === 'MV') {
     throw new Error(`[Light Engine] 缺少必要參數 (${content})`)
+  } else if (type === 'VMBS') {
+    throw new Error(`[Light Engine] 參數 (${content}) 必須為字串`)
   } else if (type === 'VMBN') {
     throw new Error(`[Light Engine] 參數 (${content}) 必須為數字`)
   } else if (type === 'VMBB') {

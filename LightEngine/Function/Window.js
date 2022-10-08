@@ -7,27 +7,20 @@ function createWindow (data) {
 class WINDOW {
   constructor (id) {
     this.id = id
-    this.synchronized_value = function () {
-      this.title = games[this.id].window.title
-      this.x = games[this.id].window.x
-      this.y = games[this.id].window.y
-      this.width = games[this.id].window.width
-      this.height = games[this.id].window.height
-      this.resizable = games[this.id].window.resizable
-      this.fullscreen = games[this.id].window.fullscreen
-      this.maximized = games[this.id].window.maximized
-      this.minimized = games[this.id].window.minimized
-      this.visible = games[this.id].window.visible
-      this.borderless = games[this.id].window.borderless
-    }
-    this.updater = function () {
-      setInterval(() => {
-        this.width = games[this.id].window.width
-        this.height = games[this.id].window.height
-      }, 10)
-    }
-    this.updater()
-    this.synchronized_value()
+    addClassData(id, 'window' ,id, (data) => {
+      this.title = games[data.game].window.title
+      this.x = games[data.game].window.x
+      this.y = games[data.game].window.y
+      this.width = games[data.game].window.width
+      this.height = games[data.game].window.height
+      this.resizable = games[data.game].window.resizable
+      this.fullscreen = games[data.game].window.fullscreen
+      this.maximized = games[data.game].window.maximized
+      this.minimized = games[data.game].window.minimized
+      this.visible = games[data.game].window.visible
+      this.borderless = games[data.game].window.borderless
+    })
+    updateClassData(id, 'window', id)
   }
   //設定標題
   setTitle (title) {
@@ -35,10 +28,12 @@ class WINDOW {
       error('GNF', this.id)
     } else if (title === undefined) {
       error('MV', 'title')
+    } else if (typeof title !== 'string') {
+      error('VMBS', 'title')
     } else {
       games[this.id].window.setTitle(title)
       games[this.id].name = title
-      this.synchronized_value()
+      updateClassData(id, 'window', id)
       return title
     }
   }
@@ -52,7 +47,7 @@ class WINDOW {
       error('VMBN', 'x, y')
     } else {
       games[this.id].window.setPosition(x, y)
-      this.synchronized_value()
+      updateClassData(id, 'window', id)
       return { x: x, y: y }
     }
   }
@@ -66,7 +61,7 @@ class WINDOW {
       error('VMBN', 'x, y')
     } else {
       games[this.id].window.setPosition(games[this.id].window.x+x, games[this.id].window.y+y)
-      this.synchronized_value()
+      updateClassData(id, 'window', id)
       return { x: games[this.id].window.x+x, y: games[this.id].window.y+y }
     }
   }
@@ -81,7 +76,7 @@ class WINDOW {
     } else {
       games[this.id].change = true
       games[this.id].window.setSize(width, height)
-      this.synchronized_value()
+      updateClassData(id, 'window', id)
       return { width: width, height: height }
     }
   }
@@ -96,7 +91,7 @@ class WINDOW {
     } else {
       games[this.id].change = true
       games[this.id].window.setSize(games[this.id].window.width+width, games[this.id].window.height+height)
-      this.synchronized_value()
+      updateClassData(id, 'window', id)
       return { width: games[this.id].window.width+width, height: games[this.id].window.height+heigh }
     }
   }
@@ -110,7 +105,7 @@ class WINDOW {
       error('VMBB', 'boolean')
     } else {
       games[this.id].window.setResizable(boolean)
-      this.synchronized_value()
+      updateClassData(id, 'window', id)
       return boolean
     }
   }
@@ -125,7 +120,7 @@ class WINDOW {
     } else {
       games[this.id].change = true
       games[this.id].window.setFullscreen(boolean)
-      this.synchronized_value()
+      updateClassData(id, 'window', id)
       return boolean
     }
   }
@@ -133,13 +128,13 @@ class WINDOW {
   maximize () {
     games[this.id].change = true
     games[this.id].window.maximize()
-    this.synchronized_value()
+    updateClassData(id, 'window', id)
   }
   //最小化
   minimize () {
     games[this.id].change = true
     games[this.id].window.maximize()
-    this.synchronized_value()
+    updateClassData(id, 'window', id)
   }
   //顯示
   show (boolean) {
@@ -151,7 +146,7 @@ class WINDOW {
       error('VMBB', 'boolean')
     } else {
       games[this.id].window.show(boolean)
-      this.synchronized_value()
+      updateClassData(id, 'window', id)
       return boolean
     }
   }
@@ -165,7 +160,7 @@ class WINDOW {
       error('VMBB', 'boolean')
     } else {
       games[this.id].window.setBorderless(boolean)
-      this.synchronized_value()
+      updateClassData(id, 'window', id)
       return boolean
     }
   }
@@ -217,7 +212,7 @@ class WINDOW {
 
 module.exports = { WINDOW, createWindow }
 
-const { games } = require('../data')
+const { games, addClassData, updateClassData } = require('../data')
 const { error } = require('./Error')
 const { displayOperations } = require('./Game')
 const { getCanvas } = require('./Canvas')
