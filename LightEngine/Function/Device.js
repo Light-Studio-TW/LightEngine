@@ -1,4 +1,8 @@
+const { checkPackage } = require('./PackageManager')
+let sdl
+
 class DEVICE {
+  sdl = checkPackage('@kmamal/sdl')
   //取得所有的設備
   static getAll () {
     loadPackages()
@@ -14,16 +18,3 @@ class DEVICE {
 module.exports = { DEVICE }
 
 const { error } = require('./Error')
-
-
-var sdl
-function loadPackages () {
-  if (sdl === undefined)  {
-    //導入node-sdl
-    try {
-      sdl = require('@kmamal/sdl')
-    } catch (err) {
-      error('MP', ['@kmamal/sdl', 'npm install @kmamal/sdl'])
-    }
-  }
-}

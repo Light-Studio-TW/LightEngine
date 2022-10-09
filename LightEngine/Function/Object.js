@@ -520,6 +520,6 @@ module.exports = { OBJECT }
 const { games, addClassData, updateClassData } = require('../data')
 const { error } = require('./Error')
 const { getPosition } = require('./Mouse')
-const { LE } = require('../index')
+const LE = require('../index')
 const { ObjectTouchObject, ObjectTouchPoint, ObjectGroupTouchObject } = require('./Hitbox')
 const { EFFECT } = require('./Effect')

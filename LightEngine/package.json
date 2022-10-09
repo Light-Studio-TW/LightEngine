@@ -1,21 +1,23 @@
 {
   "name": "light-engine-js",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "一個在JavaScript上的輕量級2D遊戲引擎。",
   "main": "index.js",
   "author": "LmanTW",
   "keywords": [
+    "game engine",
+    "2D game engine",
     "Game Engine",
-    "2D Game Engine",
-    "Game Engine",
+    "engine",
     "sdl",
     "node-sdl",
     "canvas",
-    "image-effect",
+    "image effect",
     "window",
     "mouse",
     "keyboard",
-    "audio"
+    "audio",
+    "text input"
   ],
   "license": "MIT",
   "publishConfig": {
@@ -26,7 +28,6 @@
     "url": "git://github.com/Light-Studio-TW/LightEngine.git"
   },
   "dependencies": {
-    "canvas": "^2.10.1",
-    "light-engine-js": "^1.0.7"
+    "canvas": "^2.10.1"
   }
 }

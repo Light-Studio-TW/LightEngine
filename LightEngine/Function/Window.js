@@ -1,6 +1,10 @@
+//導入sdl
+const { checkPackage } = require('./PackageManager')
+let sdl
+
 //創建視窗
 function createWindow (data) {
-  loadPackages()
+  sdl = checkPackage('@kmamal/sdl')
   return sdl.video.createWindow(data)
 }
 
@@ -20,7 +24,11 @@ class WINDOW {
       this.visible = games[data.game].window.visible
       this.borderless = games[data.game].window.borderless
     })
-    updateClassData(id, 'window', id)
+    updateClassData(this.id, 'window', this.id)
+    games[id].window.on('resize', () => {
+      games[id].change = true
+      updateClassData(this.id, 'window', this.id)
+    })
   }
   //設定標題
   setTitle (title) {
@@ -33,7 +41,7 @@ class WINDOW {
     } else {
       games[this.id].window.setTitle(title)
       games[this.id].name = title
-      updateClassData(id, 'window', id)
+      updateClassData(this.id, 'window', this.id)
       return title
     }
   }
@@ -47,7 +55,7 @@ class WINDOW {
       error('VMBN', 'x, y')
     } else {
       games[this.id].window.setPosition(x, y)
-      updateClassData(id, 'window', id)
+      updateClassData(this.id, 'window', this.id)
       return { x: x, y: y }
     }
   }
@@ -61,7 +69,7 @@ class WINDOW {
       error('VMBN', 'x, y')
     } else {
       games[this.id].window.setPosition(games[this.id].window.x+x, games[this.id].window.y+y)
-      updateClassData(id, 'window', id)
+      updateClassData(this.id, 'window', this.id)
       return { x: games[this.id].window.x+x, y: games[this.id].window.y+y }
     }
   }
@@ -76,7 +84,7 @@ class WINDOW {
     } else {
       games[this.id].change = true
       games[this.id].window.setSize(width, height)
-      updateClassData(id, 'window', id)
+      updateClassData(this.id, 'window', this.id)
       return { width: width, height: height }
     }
   }
@@ -91,7 +99,7 @@ class WINDOW {
     } else {
       games[this.id].change = true
       games[this.id].window.setSize(games[this.id].window.width+width, games[this.id].window.height+height)
-      updateClassData(id, 'window', id)
+      updateClassData(this.id, 'window', this.id)
       return { width: games[this.id].window.width+width, height: games[this.id].window.height+heigh }
     }
   }
@@ -105,7 +113,7 @@ class WINDOW {
       error('VMBB', 'boolean')
     } else {
       games[this.id].window.setResizable(boolean)
-      updateClassData(id, 'window', id)
+      updateClassData(this.id, 'window', this.id)
       return boolean
     }
   }
@@ -120,7 +128,7 @@ class WINDOW {
     } else {
       games[this.id].change = true
       games[this.id].window.setFullscreen(boolean)
-      updateClassData(id, 'window', id)
+      updateClassData(this.id, 'window', this.id)
       return boolean
     }
   }
@@ -128,16 +136,16 @@ class WINDOW {
   maximize () {
     games[this.id].change = true
     games[this.id].window.maximize()
-    updateClassData(id, 'window', id)
+    updateClassData(this.id, 'window', this.id)
   }
   //最小化
   minimize () {
     games[this.id].change = true
     games[this.id].window.maximize()
-    updateClassData(id, 'window', id)
+    updateClassData(this.id, 'window', this.id)
   }
   //顯示
-  show (boolean) {
+  setVisible (boolean) {
     if (games[this.id] === undefined) {
       error('GNF', this.id)
     } else if (boolean === undefined) {
@@ -146,7 +154,7 @@ class WINDOW {
       error('VMBB', 'boolean')
     } else {
       games[this.id].window.show(boolean)
-      updateClassData(id, 'window', id)
+      updateClassData(this.id, 'window', this.id)
       return boolean
     }
   }
@@ -160,7 +168,7 @@ class WINDOW {
       error('VMBB', 'boolean')
     } else {
       games[this.id].window.setBorderless(boolean)
-      updateClassData(id, 'window', id)
+      updateClassData(this.id, 'window', this.id)
       return boolean
     }
   }
@@ -183,7 +191,7 @@ class WINDOW {
     } else if (name === undefined || callback === undefined) {
       error('MV', 'name, callback')
     } else if (!['show', 'hide', 'move', 'maximize', 'minimize', 'resize', 'mouseHover', 'mouseLeave'].includes(name)) {
-      error('VMB', 'name', 'move, buttonDown, buttonUp, wheel')
+      error('VMB', 'name', 'show, hide, move, maximize, minimize, resize, mouseHover, mouseLeave')
     } else if (typeof callback !== 'function') {
       error('VMBF', 'callback')
     } else {
@@ -216,15 +224,3 @@ const { games, addClassData, updateClassData } = require('../data')
 const { error } = require('./Error')
 const { displayOperations } = require('./Game')
 const { getCanvas } = require('./Canvas')
-
-var sdl
-function loadPackages () {
-  if (sdl === undefined)  {
-    //導入node-sdl
-    try {
-      sdl = require('@kmamal/sdl')
-    } catch (err) {
-      error('MP', ['@kmamal/sdl', 'npm install @kmamal/sdl'])
-    }
-  }
-}

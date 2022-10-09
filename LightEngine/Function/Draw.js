@@ -18,9 +18,11 @@ class DRAW {
   clear (type){
     let quality = 0
     if (type === undefined || type === 'all') {
+      games[this.game].change = true
       quality = games[this.game].draw.length
       games[this.game].draw = []
     } else if (type === 'line') {
+      games[this.game].change = true
       for (let run = 0; run < games[this.game].draw.length; run++) {
         if (games[this.game].draw[run].type === 'line') {
           quality++
@@ -28,6 +30,7 @@ class DRAW {
         }
       }
     } else if (type === 'square') {
+      games[this.game].change = true
       for (let run = 0; run < games[this.game].draw.length; run++) {
         if (games[this.game].draw[run].type === 'square') {
           quality++
@@ -35,6 +38,7 @@ class DRAW {
         }
       }
     } else if (type === 'text') {
+      games[this.game].change = true
       for (let run = 0; run < games[this.game].draw.length; run++) {
         if (games[this.game].draw[run].type === 'text') {
           quality++
@@ -42,6 +46,7 @@ class DRAW {
         }
       }
     } else if (type === 'image') {
+      games[this.game].change = true
       for (let run = 0; run < games[this.game].draw.length; run++) {
         if (games[this.game].draw[run].type === 'image') {
           quality++
@@ -169,6 +174,7 @@ class DRAW {
     } else if (typeof x !== 'number' || typeof y !== 'number') {
       error('VMBN', 'x, y')
     } else {
+      games[this.game].change = true
       games[this.game].draw.push({
         type: 'line',
         x: games[this.game].pen.x,
@@ -191,6 +197,7 @@ class DRAW {
     } else if (typeof x !== 'number' || typeof y !== 'number' || typeof x2 !== 'number' || typeof y2 !== 'number') {
       error('VMBN', 'x, y, x2, y2')
     } else {
+      games[this.game].change = true
       games[this.game].draw.push({
         type: 'square',
         x: x,
@@ -200,6 +207,25 @@ class DRAW {
         angle: games[this.game].pen.angle,
         transform: games[this.game].pen.transform,
         color: games[this.game].pen.color,
+        frame: undefined,
+        layer: games[this.game].pen.layer
+      })
+    }
+  }
+  //圓形
+  circle (x, y) {
+    if (x === undefined || y === undefined) {
+      error('MV', 'x, y')
+    } else if (typeof x !== 'number' || typeof y !== 'number') {
+      error('VMBN', 'x, y')
+    } else {
+      games[this.game].change = true
+      games[this.game].draw.push({
+        type: 'circle',
+        x: x,
+        y: y,
+        color: games[this.game].pen.color,
+        size: games[this.game].pen.size,
         frame: undefined,
         layer: games[this.game].pen.layer
       })
@@ -217,6 +243,7 @@ class DRAW {
     } else if (games[this.game].textures[texture] === undefined) {
       error('TNF', texture)
     } else {
+      games[this.game].change = true
       games[this.game].draw.push({
         type: 'image',
         texture: texture,
@@ -239,6 +266,7 @@ class DRAW {
     } else if ((align !== undefined) && (align !== 'left' && align !== 'right' && align !== 'center')) {
       error('VMB', 'left, right, center')
     } else {
+      games[this.game].change = true
       if (align === undefined) {
         align = 'left'
       }

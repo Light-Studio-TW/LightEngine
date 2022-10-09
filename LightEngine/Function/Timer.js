@@ -11,17 +11,19 @@ function start_timer () {
     let all_key = Object.keys(repeat)
     let now_time = Date.now()
     for (let run = 0; run < all_key.length; run++) {
-      if (now_time > repeat[all_key[run]].start_time+repeat[all_key[run]].interval) {
-        repeat[all_key[run]].func(repeat[all_key[run]].time)
-        if (repeat[all_key[run]] !== undefined) {
-          repeat[all_key[run]].time--
-          if (repeat[all_key[run]].time > 0) {
-            repeat[all_key[run]].start_time = now_time
-          } else {
-            if (typeof repeat[all_key[run]].func2 === 'function') {
-              repeat[all_key[run]].func2()
+      if (repeat[all_key[run]] !== undefined) {
+        if (now_time > repeat[all_key[run]].start_time+repeat[all_key[run]].interval) {
+          repeat[all_key[run]].func(repeat[all_key[run]].count)
+          if (repeat[all_key[run]] !== undefined) {
+            repeat[all_key[run]].count++
+            if (repeat[all_key[run]].count < repeat[all_key[run]].time) {
+              repeat[all_key[run]].start_time = now_time
+            } else {
+              if (typeof repeat[all_key[run]].func2 === 'function') {
+                repeat[all_key[run]].func2()
+              }
+              delete repeat[all_key[run]]
             }
-            delete repeat[all_key[run]]
           }
         }
       }
@@ -33,13 +35,13 @@ function start_timer () {
         delete wait[all_key[run]]
       }
     }
-  }, 5)
+  }, 10)
 }
 
 //新增重複
 function add_repeat (time, interval, func, func2) {
   let id = generateID(Object.keys(repeat))
-  repeat[id] = { time: time, interval: interval, func: func, func2: func2, start_time: Date.now() }
+  repeat[id] = { time: time, count: 0, interval: interval, func: func, func2: func2, start_time: Date.now() }
   return function () {
     delete repeat[id]
   }

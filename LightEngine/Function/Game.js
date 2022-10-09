@@ -1,8 +1,17 @@
 const path = require('path')
 
+//導入canvas
+const { loadPackage, checkPackage } = require('./PackageManager')
+let loadImage = checkPackage('canvas')
+
 //創建遊戲資料
 function createGameData (data) {
   if (data.type === 'sdl') {
+    loadPackage('canvas')
+    loadPackage('@kmamal/sdl')
+    loadPackage('ffmpeg-static')
+    loadPackage('jszhuyin')
+    loadImage = checkPackage('canvas').loadImage
     return {
       id: data.id,
       name: data.name,
@@ -34,9 +43,15 @@ function createGameData (data) {
         frame: {color: 'black', size: 1},
         layer: 1
       },
-      event: {}
+      event: {},
+      input: {
+        openStatus: false,
+        text: '',
+        textWidth: 0
+      }
     }
   } else if (data.type === 'canvas') {
+    loadPackage('canvas')
     return {
       id: data.id,
       name: data.name,
@@ -369,6 +384,7 @@ class GAME_SDL {
     this.delete = new DELETE(data.id)
     this.get = new GET(data.id)
     this.draw = new DRAW(data.id)
+    this.input = new INPUT(data.id)
     addClassData(data.id, 'game', data.id, () => {
       this.name = games[this.id].name
       this.type = games[this.id].type
@@ -661,10 +677,4 @@ const { AUDIO, loadAudio } = require('./Audio')
 const { OBJECT } = require('./Object')
 const { OBJECT_GROUP } = require('./Group')
 const { DRAW } = require('./Draw')
-
-//導入node-canvas
-try {
-  var { loadImage } = require('canvas')
-} catch (err) {
-  error('MP', ['canvas', 'npm install canvas'])
-}
+const { INPUT } = require('./Input') 

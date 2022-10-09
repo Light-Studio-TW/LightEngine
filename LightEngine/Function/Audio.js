@@ -1,9 +1,11 @@
 const { spawn } = require('child_process')
-const path = require('path')
+const { checkPackage } = require('./PackageManager')
+let ffmpeg, sdl
 
 //加載音頻
 async function loadAudio (path, { channels, frequency }, { start, end }, { volume, speed }, callback) {
-  loadPackages()
+  ffmpeg = checkPackage('ffmpeg-static')
+  sdl = checkPackage('@kmamal/sdl')
 	const proc = spawn(
 		ffmpeg,
 		[
@@ -54,6 +56,7 @@ class AUDIO  {
       error('VMBF', 'func')
     } else {
       if (games[this.game].audios[this.id].player === undefined) {
+        let playbackDevice
         if (getSettings().AudioDevice === 'auto') {
           playbackDevice = sdl.audio.devices.find((x) => x.recording === false)
         } else  {
@@ -157,23 +160,3 @@ module.exports = { AUDIO, loadAudio }
 const { games, addClassData, updateClassData } = require('../data')
 const { error } = require('./Error')
 const { getSettings } = require('./Settings')
-
-var sdl, ffmpeg
-function loadPackages () {
-  if (sdl === undefined) {
-    //導入node-sdl
-    try {
-      sdl = require('@kmamal/sdl')
-    } catch (err) {
-      error('MP', ['@kmamal/sdl', 'npm install @kmamal/sdl'])
-    }
-  }
-  if (ffmpeg === undefined) {
-    //導入ffmpeg
-    try {
-      ffmpeg = require('ffmpeg-static')
-    } catch (err) {
-      error('MP', ['ffmpeg-static', 'npm install ffmpeg-static'])
-    }
-  }
-}

@@ -1,18 +1,17 @@
 module.exports = { getCanvas }
 
 const { games, tryFinedTextureBuffer } = require('../data')
-const { error } = require('./Error')
 const { applyEffect } = require('./Effect')
 const { getSettings } = require('./Settings')
 
-//導入node-canvas
-try {
-  var { createCanvas } = require('canvas')
-} catch (err) {
-  error('MP', ['canvas', 'npm install canvas'])
-}
+//導入node-
+const { checkPackage } = require('./PackageManager')
+let createCanvas
 
 function getCanvas (game, display, width, height) {
+  if (createCanvas === undefined) {
+    createCanvas = checkPackage('canvas').createCanvas
+  }
   let canvas = createCanvas(width, height)
   let ctx = canvas.getContext('2d')
   for (let run = 0; run < display.length; run++) {
@@ -96,12 +95,35 @@ function getCanvas (game, display, width, height) {
         ctx.lineWidth = display[run].frame.size
         ctx.strokeRect(display[run].x, display[run].y, display[run].x2, display[run].y2)
       }
+    } else if (display[run].type === 'circle') {
+      ctx.fillStyle = display[run].color
+      ctx.arc(display[run].x, display[run].y, display[run].size, 0, 2 * Math.PI)
+      ctx.fill()
+      if (display[run].frame !== undefined) {
+        ctx.strokeStyle = display[run].frame.color
+        ctx.arc(display[run].x, display[run].y, display[run].size, 0, 2 * Math.PI)
+        ctx.lineWidth = display[run].frame.size
+        ctx.stroke()
+      }
     } else if (display[run].type === 'image') {
       if (display[run].angle !== 0) {
         ctx.transform(display[run].transform.x, display[run].transform.y)
         ctx.rotate(display[run].angle)
       }
       ctx.drawImage(games[game].textures[display[run].texture].image, display[run].x, display[run].y, display[run].width, display[run].height)
+    }
+  }
+  if (games[game].input.openStatus) {
+    ctx.fillStyle = 'white'
+    ctx.fillRect(0, height-65, width, height)
+    ctx.font = '40px serif'
+    ctx.fillText(games[game].input.text, 10-(games[game].input.textWidth-(games[game].window.width-20)), height-20)
+    games[game].input.textWidth = ctx.measureText(games[game].input.text).width
+    ctx.fillStyle = 'black'
+    if (games[game].input.textWidth > games[game].window.width-20) {
+      ctx.fillText(games[game].input.text, 10-(games[game].input.textWidth-(games[game].window.width-20)), height-20)
+    } else {
+      ctx.fillText(games[game].input.text, 10, height-20)
     }
   }
   return canvas

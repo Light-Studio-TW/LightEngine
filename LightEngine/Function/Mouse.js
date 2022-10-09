@@ -1,6 +1,10 @@
+//導入sdl
+const { checkPackage } = require('./PackageManager')
+let sdl
+
 class MOUSE {
+  sdl = checkPackage('@kmamal/sdl')
   constructor (game) {
-    loadPackages()
     this.game = game
     this.nowPress = {}
     this.updater = {
@@ -83,7 +87,7 @@ class MOUSE {
               } else if (this.name === 'mouseButtonDown' || this.name === 'mouseButtonUp') {
                 callback({ x: data.x, y: data.y, button: data.button })
               } else if (this.name === 'mouseWheel') {
-                callback({ x: data.x, y: data.y, button: data.button })
+                callback({ x: data.dx, y: data.dy })
               }
             }
           })
@@ -107,15 +111,3 @@ module.exports = { MOUSE, getPosition }
 
 const { games } = require('../data')
 const { error } = require('./Error')
-
-var sdl
-function loadPackages () {
-  if (sdl === undefined)  {
-    //導入node-sdl
-    try {
-      sdl = require('@kmamal/sdl')
-    } catch (err) {
-      error('MP', ['@kmamal/sdl', 'npm install @kmamal/sdl'])
-    }
-  }
-}
