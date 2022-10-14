@@ -21,11 +21,11 @@
   ],
   "license": "MIT",
   "publishConfig": {
-    "@LmanTW:registry": "https://npm.pkg.github.com"
+    "registry": "https://npm.pkg.github.com@LmanTW"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/Light-Studio-TW/LightEngine.git"
+    "url": "https://github.com/Light-Studio-TW/LightEngine.git"
   },
   "dependencies": {
     "canvas": "^2.10.1"
