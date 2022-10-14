@@ -21,7 +21,7 @@
   ],
   "license": "MIT",
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com@LmanTW"
+    "registry": "https://npm.pkg.github.com"
   },
   "repository": {
     "type": "git",
