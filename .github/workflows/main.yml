@@ -25,7 +25,6 @@ jobs:
         with:
           node-version: 16
           registry-url: https://npm.pkg.github.com/
-          scope: '@LmanTW'
       - run: cd /home/runner/work/LightEngine/LightEngine/LightEngine
       - run: npm publish
         env:
