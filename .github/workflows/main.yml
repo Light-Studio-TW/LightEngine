@@ -12,9 +12,6 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 12
-      - run: cd /home/runner/work/LightEngine/LightEngine
-      - run: npm install
-      - run: npm ci
 
   publish-gpr:
     needs: build
@@ -30,8 +27,6 @@ jobs:
           registry-url: https://npm.pkg.github.com/
           scope: '@LmanTW'
       - run: cd /home/runner/work/LightEngine/LightEngine
-      - run: npm ci
-      - run: npm install
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
