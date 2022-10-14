@@ -1,5 +1,6 @@
 {
   "ShowHitbox": false,
   "AudioDevice": "auto",
-  "SaveTextureBuffer": 250
+  "SaveTextureBuffer": 250,
+  "TimerInterval": 1
 }

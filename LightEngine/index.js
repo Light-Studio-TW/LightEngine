@@ -1,3 +1,8 @@
+const {
+  Worker, isMainThread, parentPort, workerData
+} = require('node:worker_threads');
+new Worker('./LightEngine/Functions/Timer.js')
+
 class CREATE {
   //創建遊戲
   static game (data) {
@@ -23,10 +28,10 @@ class CREATE {
           height: 500,
           camera_x: 0, 
           camera_y: 0, 
-          preload_range: 50 
+          preloadRange: 50 
         }, data)
-        if (typeof data.width !== 'number' || typeof data.height !== 'number' || typeof data.camera_x !== 'number' || typeof data.camera_y !== 'number' || typeof data.preload_range !== 'number' ) {
-          error('OVMBN', ['data', 'width, height, camera_x, camera_y, preload_range'])
+        if (typeof data.width !== 'number' || typeof data.height !== 'number' || typeof data.camera_x !== 'number' || typeof data.camera_y !== 'number' || typeof data.preloadRange !== 'number' ) {
+          error('OVMBN', ['data', 'width, height, camera_x, camera_y, preloadRange'])
         } else if (data.type !== 'sdl' && data.type !== 'canvas') {
           error('OVMB', ['data', 'type', 'sdl, canvas'])
         } else {
@@ -62,15 +67,13 @@ class DELETE {
   } 
 }
 
-const { start_timer } = require('./Function/Timer')
-const { DEVICE } = require('./Function/Device')
+const { DEVICE } = require('./Functions/Device')
 
 let LE = new class {
   constructor () {
     this.create = CREATE
     this.delete = DELETE
     this.device = DEVICE
-    start_timer()
   }
   //取得設定
   getSettings () {
@@ -133,9 +136,9 @@ let LE = new class {
 module.exports = LE
 
 const { games } = require('./data')
-const { error } = require('./Function/Error')
-const { defaultValue } = require('./Function/DefaultValue')
-const { generateID } = require('./Function/GenerateID')
-const { add_repeat, add_wait } = require('./Function/Timer')
-const { getSettings, changeSettings } = require('./Function/Settings')
-const { GAME_SDL, GAME_CANVAS, createGameData } = require('./Function/Game')
+const { error } = require('./Functions/Error')
+const { defaultValue } = require('./Functions/DefaultValue')
+const { generateID } = require('./Functions/GenerateID')
+const { add_repeat, add_wait } = require('./Functions/Timer')
+const { getSettings, changeSettings } = require('./Functions/Settings')
+const { GAME_SDL, GAME_CANVAS, createGameData } = require('./Functions/Game')
