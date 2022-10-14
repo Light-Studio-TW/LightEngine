@@ -13,6 +13,7 @@ jobs:
         with:
           node-version: 12
       - run: cd /home/runner/work/LightEngine/LightEngine
+      - run: npm install
       - run: npm ci
 
   publish-gpr:
@@ -30,6 +31,7 @@ jobs:
           scope: '@LmanTW'
       - run: cd /home/runner/work/LightEngine/LightEngine
       - run: npm ci
+      - run: npm install
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
