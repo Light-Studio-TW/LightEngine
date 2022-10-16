@@ -28,7 +28,7 @@ class KEYBOARD {
       })
     }
   }
-  //按鍵壓下
+  //按鍵壓���
   keyDown (callback) {
     if (games[this.game] === undefined) {
       error('GNF', this.game)

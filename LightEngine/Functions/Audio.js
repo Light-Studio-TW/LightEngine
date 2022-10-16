@@ -9,6 +9,9 @@ audioWorker.addListener('message', (message) => {
   if (message.type === 'returnAudioBuffer') {
     workerList[message.id].func(message.buffer)
     delete workerList[message.id]
+  } else if (message.type === 'playFinsh') {
+    workerList[message.id].func(message)
+    delete workerList[message.id]
   }
 })
 
@@ -27,8 +30,8 @@ async function loadAudio (path, { channels, frequency }, { start, end }, { volum
     sdl = checkPackage('@kmamal/sdl')
   }
   return new Promise((resolve, reject) => {
-    callWorker({ type: 'loadAudio', path, channels, frequency, start, end, volume, speed }, (buffer) => {
-      resolve(buffer)
+    callWorker({ type: 'loadAudio', path, channels, frequency, start, end, volume, speed }, (message) => {
+      resolve(message.buffer)
     })
   })
 }
@@ -68,26 +71,16 @@ class AUDIO  {
             error('DNF', choose)
           }
         }
-        const audioInstance = sdl.audio.openDevice(playbackDevice, {
-					channels: games[this.game].audios[this.id].channels,
-					frequency: games[this.game].audios[this.id].frequency,
-					format: games[this.game].audios[this.id].format
-				})
-        audioInstance.enqueue(Buffer.from(games[this.game].audios[this.id].buffer))
-				games[this.game].audios[this.id].player = audioInstance
-			}
-      games[this.game].audios[this.id].player.play()
-      return new Promise((resolve, reject) => {
-        let interval = setInterval(() => {
-          if (games[this.game].audios[this.id].player.queued < 1) {
-            clearInterval(interval)
+        return new Promise((resolve, reject) => {
+          callWorker({ type: 'play', game: this.game, audioId: this.id, buffer: games[this.game].audios[this.id].buffer, playbackDevice: playbackDevice, channels: games[this.game].audios[this.id].channels, frequency: games[this.game].audios[this.id].frequency, format: games[this.game].audios[this.id].format }, () => {
             if (func !== undefined) {
               func()
             }
             resolve()
-          }
-        }, 10)
-    })
+          })
+        })
+        //games[this.game].audios[this.id].player = audioInstance
+			}
     }
   }
   //暫停音頻
@@ -135,24 +128,6 @@ class AUDIO  {
       games[this.game].audios[this.id].player.play()
     }
   }
-}
-
-function toArrayBuffer(buf, start, length) {
-  const ab = new ArrayBuffer(length)
-  const view = new Uint8Array(ab)
-  for (let i = start; i < length; i++) {
-    view[i] = buf[i]
-  }
-  return ab
-}
-
-function toBuffer(ab) {
-  const buf = Buffer.alloc(ab.byteLength)
-  const view = new Uint8Array(ab)
-  for (let i = 0; i < buf.length; i++) {
-    buf[i] = view[i]
-  }
-  return buf
 }
 
 module.exports = { AUDIO, loadAudio }

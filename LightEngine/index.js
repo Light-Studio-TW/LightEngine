@@ -35,10 +35,11 @@ class CREATE {
         } else if (data.type !== 'sdl' && data.type !== 'canvas') {
           error('OVMB', ['data', 'type', 'sdl, canvas'])
         } else {
-          games[data.id] = createGameData(data)
           if (data.type === 'sdl') {
+            games[data.id] = createSDLGameData(data)
             return new GAME_SDL(games[data.id])
           } else if (data.type === 'canvas') {
+            games[data.id] = createCanvasGameData(data)
             return new GAME_CANVAS(games[data.id])
           }
         }
@@ -141,4 +142,5 @@ const { defaultValue } = require('./Functions/DefaultValue')
 const { generateID } = require('./Functions/GenerateID')
 const { add_repeat, add_wait } = require('./Functions/Timer')
 const { getSettings, changeSettings } = require('./Functions/Settings')
-const { GAME_SDL, GAME_CANVAS, createGameData } = require('./Functions/Game')
+const { GAME_CANVAS, createCanvasGameData } = require('./Functions/GameCanvas')
+const { GAME_SDL, createSDLGameData } = require('./Functions/GameSDL')

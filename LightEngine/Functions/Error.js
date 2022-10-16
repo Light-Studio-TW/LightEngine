@@ -35,6 +35,8 @@ function error (type, content) {
     throw new Error(`[Light Engine] 找不到音頻 ${content}`)
   } else if (type === 'ONF') {
     throw new Error(`[Light Engine] 找不到物件 ${content}`)
+  } else if (type === 'PNF') {
+    throw new Error(`[Light Engine] 找不到畫筆 ${content}`)
   } else if (type === 'DID') {
     throw new Error(`[Light Engine] 重複ID (${content})`)
   }
