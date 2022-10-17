@@ -720,7 +720,7 @@ class OBJECT_GROUP_EFFECT {
       return value
     }
   }
-  //調整去背等級
+  //調整去���等級
   changeRemoveBackground (value) {
     if (games[this.game] === undefined) {
      error('GNF', this.game)

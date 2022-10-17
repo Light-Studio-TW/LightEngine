@@ -4,6 +4,7 @@ const readline = require('readline')
 module.exports = menu
 
 const { createPlugin, installPlugin } = require('./plugin')
+const { register } = require('./account')
 
 let path = process.argv[1].split('/')
 path.splice(path.length-2, 2)
@@ -37,16 +38,18 @@ async function input () {
     output: process.stdout
   });
   rl.question('指令: ', (command) => {
+    rl.close()
     command = command.split(' ')
     if (command[0] === 'update' || command[0] === 'u') {
-      rl.close()
       console.log('')
       const update = require('./update')
       update(path, () => {
         menu()
       })
+    } else if (command[0] === 'register' || command[0] === 'r') {
+      console.log('')
+      register(command)
     } else if (command[0] === 'plugin' || command[0] === 'p') {
-      rl.close()
       console.log('')
       if (command[1] === 'create' || command[1] === 'c') {
         createPlugin(command, path)
@@ -54,10 +57,8 @@ async function input () {
         installPlugin(command, path)
       }
     } else if (command[0] === 'exit' || command[0] === 'e') {
-      rl.close()
       console.log('')
     } else {
-      rl.close()
       menu()
     }
   });

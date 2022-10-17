@@ -19,7 +19,7 @@ async function update (path, func) {
           input: process.stdin,
           output: process.stdout
         })
-        rl.question('[Light Engine]: 你的 Light Engine 以為最新版本 [enter繼續]', () => {
+        rl.question('[Light Engine]: 你的 Light Engine 以為最新版本 [enter繼���]', () => {
           rl.close()
           func()
         })

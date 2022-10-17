@@ -1,6 +1,6 @@
 const https = require('https');
 const fs = require('fs')
-const host = 'Light-Engine-Server-New.lmantw.repl.co'
+const host = 'Light-Engine.icebrick01.repl.co'
 
 module.exports = connect 
 
