@@ -379,8 +379,29 @@ class GAME_CANVAS {
     }
   }
   //取得顏色
-  getColor() {
-    
+  getColor(x, y) {
+    if (games[this.id] === undefined) {
+      error('GNF', this.id)
+    } else if (x === undefined || y === undefined) {
+      error('MV', 'x, y')
+    } else if (typeof x !== 'number' || typeof y !== 'number') {
+      error('VMBN', 'x, y')
+    } else {
+      if (games[this.id].display === undefined) {
+        games[this.id].display = (displayOperations(this.id, games[this.id].width))
+      }
+      let displaySave = []
+      let all_key = Object.keys(games[this.id].pens)
+      for (let run = 0; run < all_key.length; run++) {
+        displaySave = displaySave.concat(games[this.id].pens[all_key[run]].draw)
+      }
+      games[this.id].canvas = getCanvas(this.id, displaySave.sort((prevent, current) => {
+        return prevent.layer - current.layer
+      }), games[this.id].width, games[this.id].height)
+      let buffer = games[this.id].canvas.toBuffer('raw')
+      let row = x+(y*games[this.id].width)
+      return { r: buffer[row], g: buffer[row+1], b: buffer[row+2], a: buffer[row+3] }
+    }
   }
   //顯示運算
   displayOperations () {
@@ -469,6 +490,7 @@ const { error } = require('./Error')
 const { defaultValue } = require('./DefaultValue')
 const { generateID } = require('./GenerateID')
 const { createEffectData } = require('./Effect')
+const { getCanvas } = require('./Canvas')
 const { OBJECT } = require('./Object')
 const { PEN } = require('./pen')
 const { OBJECT_GROUP } = require('./Group')
