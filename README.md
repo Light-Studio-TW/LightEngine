@@ -1,6 +1,5 @@
 # **Light Engine**
 
-[![Package](https://img.shields.io/npm/v/%2540kmamal%252Fsdl)](https://www.npmjs.com/package/light-engine-js)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 一個在JavaScript上的輕量級2D遊戲引擎。
@@ -37,6 +36,7 @@ LE.window.display()                                          //將畫面顯示�
   * [game.changeHeight()](#gamechangeheight)
   * [game.setPreloadRange()](#gamesetpreloadRange)
   * [game.changePreloadRange()](#gamechangepreloadRange)
+  * [game.getColor()](#gamegetcolor)
   * [game.displayOperations()](#gamedisplayoperations)
   * [game.event()](#gameevent)
   * [game.callEvent()](#gamecallEvent)
@@ -70,7 +70,31 @@ LE.window.display()                                          //將畫面顯示�
 * [game.keyboard](#gamekeyboard)
   * [game.keyboard.keyDown()](#gamekeyboardkeydown)
   * [game.keyboard.keyUp()](#gamekeyboardkeyup)
-* [value](#value)
+* [object](#object)
+  * [object.setPosition()](#objectsetposition)
+  * [object.changePosition()](#objectchangeposition)
+  * [object.setX()](#objectsetx)
+  * [object.changeX()](#objectchangex)
+  * [object.setY()](#objectsety)
+  * [object.changeY()](#objectchangey)
+  * [object.setTexture()](#objectsettexture)
+  * [object.setLayer()](#objectsetlayer)
+  * [object.changeLayer()](#objectchangelayer)
+  * [object.setSize()](#objectsetsize)
+  * [object.changeSize()](#objectchangesize)
+  * [object.setWidth()](#objectsetwidth)
+  * [object.changeWidth()](#objectchangewidth)
+  * [object.setHeight()](#objectsetheight)
+  * [object.changeHeight()](#objectchangeheight)
+  * [object.setAngle()](#objectsetangle)
+  * [object.changeAngle()](#objectchangeangle)
+  * [object.setHitbox()](#objectsethitbox)
+  * [object.changeHitbox()](#objectchangehitbox)
+  * [object.facing()](#objectfacing)
+  * [object.move()](#objectmove)
+  * [object.travelTo()](#objecttravelto)
+  * [object.touch()](#objecttouch)
+* [value](#value) 
   * [value.repeat](#valuerepeat)
   * [value.create](#valuecreate)
   * [value.create.texture](#valuecreatetexture)
@@ -235,6 +259,15 @@ game.changePreloadRange(value) //更改遊戲的預加載範圍
 ```
 * `value <number>`｜改變的值 (必要參數)
 
+## game.getColor()
+```js
+game.getColor(x, y) //取得畫面上的rgba
+```
+* `x <number>`｜要取得的X位置 (必要參數)
+* `y <number>`｜要取得的Y位置 (必要參數)
+
+✅ 返回 { r, g, b, a }
+
 ## game.displayOperations()
 ```js
 game.displayOperations(value) //顯示優化
@@ -332,17 +365,18 @@ game.delete.object(object) //刪除物件
 # game.window
 window是一個Class，如果您的遊戲類型為sdl，那你將可以透過game.window來找到此Class，你可以透過Class裡面的參數來取得視窗的參數，但不能直接更改，你只能透過Class裡的函數來設定.更改參數。
 
-[查看哪種遊戲類型擁有window功能](#game)
+* [查看哪種遊戲類型擁有window功能](#game)
 
-[查看視窗創建時的參數](#valuecreatewindow)
+* [查看視窗創建時的參數](#valuecreatewindow)
 
 ```js
+//視窗的參數
 {
   title, //視窗的標題
-  x, //視窗的x
-  y, //視窗的Y
-  width, //視窗的寬度
-  height, //視窗的高度
+  x, //視窗的X (number)
+  y, //視窗的Y (number)
+  width, //視窗的寬度 (number)
+  height, //視窗的高度 (number)
   resizable, //視窗是否可重設大小 (boolean)
   fullscreen, //視窗是否為全螢幕 (boolean)
   maximized, //視窗是否最大化 (boolean)
@@ -583,6 +617,277 @@ game.keyboard.keyDown(callback) //當按鍵放開
 * `callback (function)`｜按鍵放開後觸發的函數
 
 ✅ 返回一個Class，你可以用Class裡的stop函數來停止聆聽事件
+
+# object
+
+object是一個Class，會在[創建物件](#gamecreateobject)後返回，你可以透過Class裡面的參數來取得物件的參數，但不能直接更改，你只能透過Class裡的函數來設定.更改參數。
+
+* [創建物件](gamecreateobject)
+
+* [物件的效果](objecteffect)
+
+```js
+//物件的參數
+{
+  id, //物件的ID
+  x, //物件的X (number)
+  y, //物件的Y (number)
+  texture, //物材質的ID
+  layer, //物件的層 (number)
+  width, //物件的寬度 (number)
+  height, //物件的高度 (number)
+  angle, //物件的角度 (number)
+  effect, //物件的效果 (class)
+  hitbox: {
+    width, //物件碰撞箱寬度 (number)
+    height //物件碰撞箱高度 (number)
+  } 
+}
+
+//對物件進行操作的範例
+let object = game.create.object({ texture: 'Texture' })
+object.setPostition(100, 100)
+```
+
+## object.setPosition()
+```js
+object.setPosition(x, y) //設定物件的位置
+```
+
+* `x <number>`｜物件的新X座標 (必要參數)
+* `y <number>`｜物件的新Y座標 (必要參數)
+
+✅ 返回 { x, y }
+
+## object.changePosition()
+```js
+object.changePosition(x, y) //調整物件的位置
+```
+
+* `x <number>`｜改變物件的X座標的值 (必要參數)
+* `y <number>`｜改變物件的Y座標的值 (必要參數)
+
+✅ 返回 { x: object.x, y: object.y }
+
+## object.setX()
+```js
+object.setX(value) //設定物件的X
+```
+
+* `value <number>`｜物件的新X (必要參數)
+
+✅ 返回 object.x
+
+## object.changeX()
+```js
+object.changeX(value) //調整物件的X
+```
+
+* `value <number>`｜改變物件的X座標的值 (必要參數)
+
+✅ 返回 object.x
+
+## object.setY()
+```js
+object.setY(value) //設定物件的Y
+```
+
+* `value <number>`｜物件的新Y (必要參數)
+
+✅ 返回 objec.y
+
+## object.changeY()
+```js
+object.changeY(value) //調整物件的Y
+```
+
+* `value <number>`｜改變物件的Y座標的值 (必要參數)
+
+✅ 返回 object.y
+
+## object.setTexture()
+```js
+object.setTexture(texture) //設定物件的材質
+```
+
+* `texture`｜材質的Class或材質的ID (必要參數)
+
+✅ 返回 object.texture (ID)
+
+## object.setLayer()
+```js
+object.setLayer(value) //設定物件的層
+```
+
+* `value <number>`｜物件的新層 (必要參數)
+
+✅ 返回 object.layer
+
+## object.changeLayer()
+```js
+object.changeLayer(value) //調整物件的層
+```
+
+* `value <number>`｜改變物件的層的值 (必要參數)
+
+✅ 返回 object.layer
+
+## object.setSize()
+```js
+object.setSize(value) //設定物件的大小
+```
+
+* `value <number>`｜物件的新大小 (必要參數)
+
+✅ 返回 { width: object.width, height: object.height }
+
+## object.changeSize()
+```js
+object.changeSize(value) //調整物件的大小
+```
+
+* `value <number>`｜改變物件大小的值 (必要參數)
+
+✅ 返回 { width: object.width, height: object.height }
+
+## object.setWidth()
+```js
+object.setWidth(value) //設定物件的寬度
+```
+
+* `value <number>`｜物件的新寬度 (必要參數)
+
+✅ 返回 object.width
+
+## object.changeWidth()
+```js
+object.changeWidth(value) //調整物件的寬度
+```
+
+* `value <number>`｜改變物件的寬度的值 (必要參數)
+
+✅ 返回 object.width
+
+## object.setHeight()
+```js
+object.setHeight(value) //設定物件的高度
+```
+
+* `value <number>`｜物件的新高度 (必要參數)
+
+✅ 返回 object.height
+
+## object.changeHeight()
+```js
+object.changeHeight(value) //調整物件的高度
+```
+
+* `value <number>`｜改變物件的高度的值 (必要參數)
+
+✅ 返回 object.height
+
+## object.setAngle()
+```js
+object.setAngle(value) //設定物件的角度
+```
+
+* `value <number>`｜物件的新角度 (必要參數)
+
+✅ 返回 object.angle
+
+## object.changeAngle()
+```js
+object.changeAngle(value) //調整物件的角度
+```
+
+* `value <number>`｜改變物件的角度的值 (必要參數)
+
+✅ 返回 object.angle
+
+## object.setHitbox()
+```js
+object.setHitbox(width, height) //設定物件的碰撞箱
+```
+
+* `width <number>`｜物件碰撞箱的新寬度 (必要參數)
+* `height <number>`｜物件碰撞箱的新高度 (必要參數)
+
+✅ 返回 { width: object.hitbox.width, height: object.hitbox.height }
+
+## object.changeHitbox()
+```js
+object.changeHitbox(width, height) //設定物件的碰撞箱
+```
+
+* `width <number>`｜改變物件碰中箱寬度的值 (必要參數)
+* `height <number>`｜改變物件碰中箱高度的值 (必要參數)
+
+✅ 返回 { width: object.hitbox.width, height: object.hitbox.height }
+
+## object.facing()
+```js
+object.facing(data) //面朝
+```
+
+* `data <object>`｜面朝的資料，可以面朝一個座標，或面朝另一個物件 (必要參數)
+
+```js
+//面朝一個座標
+object.facing({
+  x: 100, //面朝的X座標
+  y: 100, //面朝的Y座標
+})
+
+//面朝一個物件
+object.facing({
+  object: 'Object1' //物件的Class或物件的ID
+})
+```
+
+✅ 返回 object.angle
+
+## object.move()
+```js
+object.move(value) //往面朝的方向移動
+```
+
+* `value <number>`｜移動的距離 (必要參數)
+
+✅ 返回 { x: object.x, y: object.y }
+
+## object.travelTo()
+```js
+object.move(x, y, time) //滑行到座標
+```
+
+* `x <number>`｜目的地的X座標 (必要參數)
+* `y <number>`｜目的地的Y座標 (必要參數)
+* `time <number>`｜滑行的時間 (必要參數)
+
+❌ 不返回任何東西
+
+## object.touch()
+```js
+object.move(type, data) //偵測是否碰到東西 (碰撞箱)
+```
+
+* `type <string>`｜偵測的類型
+* `data <number>`｜偵測的資料
+
+|偵測類型  |註解       |sdl   |canvas|
+|:----    |:----     |:----:|:----:|
+|mouse    |是否碰到鼠標|✅    | ❌    |
+|object   |是否碰到物件|✅    | ✅    |
+
+```js
+//偵測是否碰到滑鼠的範例
+object.touch('mouse')
+
+//偵測是否碰到物件的範例
+object.touch('object', 'Object1')
+```
+
+✅ 返回 true 或 false
 
 # 參數
 
