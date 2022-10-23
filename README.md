@@ -4,15 +4,24 @@
 
 一個在JavaScript上的輕量級2D遊戲引擎。
 
+Light Engine是一個在JavaScript上的輕量級遊戲引擎，在使用Light Engine時您不用編寫Html，只需要編寫Javascript。Light Engine提供物件.視窗.滑鼠.鍵盤等功能。
+
 ## **安裝**
-你可以使用npm來安裝Light Engine。
+在使用Light Engine前，您需要先安裝Light Engine CLI
+(Light Engine CLI目前只支援Linux, Unix, MacOS)
 ```
-npm install light-engine-js
+1.在終端機輸入 curl https://light-engine.icebrick01.repl.co/install | node
+
+2.在安裝完成後，將目錄切換到要安裝Light Engine的文件夾 (cd <path>)
+
+3.在終端機輸入 le install 來在所在目錄安裝Light Engine
+
+4.安裝完成，您可以開始使用Light Engine了！
 ```
 
 ## **範例**
 ```js
-const LE = require('light-engine-js')                        //導入Light Engine
+const LE = require('./LightEngine/index')                        //導入Light Engine
 LE.create.game({ type: 'sdl' })                              //創建一個遊戲
 LE.draw.setColor('white')                                    //將繪製的顏色設為白色
 LE.draw.square(0, 0, game.window.width, game.window.height)  //繪製一個正方形
